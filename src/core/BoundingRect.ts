@@ -16,6 +16,7 @@ const rt = new Point();
 const minTv = new Point();
 const maxTv = new Point();
 
+// 包围盒
 class BoundingRect {
 
     x: number

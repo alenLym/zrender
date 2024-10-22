@@ -16,6 +16,8 @@ type DiffPath = {
 
 // Using O(ND) algorithm
 // TODO: Optimize when diff is large.
+
+// 计算两个数组的差异
 function diff<T>(oldArr: T[], newArr: T[], equals: EqualFunc<T>): DiffComponent[] {
     if (!equals) {
         equals = function (a, b) {
@@ -108,6 +110,7 @@ function diff<T>(oldArr: T[], newArr: T[], equals: EqualFunc<T>): DiffComponent[
     }
 }
 
+// 提取公共元素
 function extractCommon<T>(basePath: DiffPath, newArr: T[], oldArr: T[], diagonalPath: number, equals: EqualFunc<T>) {
     var newLen = newArr.length;
     var oldLen = oldArr.length;
@@ -134,6 +137,7 @@ function extractCommon<T>(basePath: DiffPath, newArr: T[], oldArr: T[], diagonal
     return oldPos;
 }
 
+// 添加组件
 function pushComponent(components: DiffComponent[], added: boolean, removed: boolean) {
     var last = components[components.length - 1];
     if (last && last.added === added && last.removed === removed) {
@@ -156,6 +160,7 @@ function pushComponent(components: DiffComponent[], added: boolean, removed: boo
     }
 }
 
+// 构建值
 function buildValues(components: DiffComponent[]) {
     var componentPos = 0;
     var componentLen = components.length;
@@ -187,10 +192,12 @@ function buildValues(components: DiffComponent[]) {
     return components;
 }
 
+// 克隆路径
 function clonePath(path: DiffPath) {
     return { newPos: path.newPos, components: path.components.slice(0) };
 }
 
+// 数组差异
 export default function arrayDiff<T>(oldArr: T[], newArr: T[], equal?: EqualFunc<T>): DiffComponent[] {
     return diff(oldArr, newArr, equal);
 }

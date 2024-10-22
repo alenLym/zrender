@@ -2,6 +2,7 @@ import { isArray, isNumber, map } from '../core/util';
 import Path from '../graphic/Path';
 import TSpan from '../graphic/TSpan';
 
+// 规范化线型
 export function normalizeLineDash(lineType: any, lineWidth?: number): number[] | false {
     if (!lineType || lineType === 'solid' || !(lineWidth > 0)) {
         return null;
@@ -13,6 +14,7 @@ export function normalizeLineDash(lineType: any, lineWidth?: number): number[] |
             : isNumber(lineType)
                 ? [lineType] : isArray(lineType) ? lineType : null;
 }
+// 获取线型
 export function getLineDash(el: Path | TSpan): [number[] | false, number] {
     const style = el.style;
 

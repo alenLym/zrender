@@ -13,6 +13,7 @@ import BoundingRect from '../core/BoundingRect';
 import { REDRAW_BIT } from '../graphic/constants';
 import { platformApi } from '../core/platform';
 
+// 创建画布
 function createDom(id: string, painter: CanvasPainter, dpr: number) {
     const newDom = platformApi.createCanvas();
     const width = painter.getWidth();
@@ -44,6 +45,7 @@ export interface LayerConfig {
     lastFrameAlpha?: number
 };
 
+// 图层
 export default class Layer extends Eventful {
 
     id: string

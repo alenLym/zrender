@@ -7,6 +7,7 @@ function isAroundEqual(a: number, b: number): boolean {
     return Math.abs(a - b) < EPSILON;
 }
 
+// 检查多边形是否包含点
 export function contain(points: VectorArray[], x: number, y: number) {
     let w = 0;
     let p = points[0];

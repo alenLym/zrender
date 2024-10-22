@@ -38,7 +38,7 @@ let instances: { [key: number]: ZRender } = {};
 function delInstance(id: number) {
     delete instances[id];
 }
-
+//
 function isDarkMode(backgroundColor: string | GradientObject | PatternObject): boolean {
     if (!backgroundColor) {
         return false;

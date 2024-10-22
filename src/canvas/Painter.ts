@@ -21,7 +21,7 @@ const CANVAS_ZLEVEL = 314159;
 const EL_AFTER_INCREMENTAL_INC = 0.01;
 const INCREMENTAL_INC = 0.001;
 
-
+// 检查图层是否有效
 function isLayerValid(layer: Layer) {
     if (!layer) {
         return false;
@@ -40,6 +40,7 @@ function isLayerValid(layer: Layer) {
     return true;
 }
 
+// 创建画布根元素
 function createRoot(width: number, height: number) {
     const domRoot = document.createElement('div');
 

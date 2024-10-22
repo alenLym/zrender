@@ -19,7 +19,7 @@ import { DEFAULT_FONT } from '../core/platform';
 
 const pathProxyForDraw = new PathProxy(true);
 
-// Not use el#hasStroke because style may be different.
+// 检查是否具有描边
 function styleHasStroke(style: PathStyleProps) {
     const stroke = style.stroke;
     return !(stroke == null || stroke === 'none' || !(style.lineWidth > 0));
@@ -27,16 +27,18 @@ function styleHasStroke(style: PathStyleProps) {
 
 // ignore lineWidth and must be string
 // Expected color but found '[' when color is gradient
+// 检查是否为有效的描边或填充样式
 function isValidStrokeFillStyle(
     strokeOrFill: PathStyleProps['stroke'] | PathStyleProps['fill']
 ): strokeOrFill is string {
     return typeof strokeOrFill === 'string' && strokeOrFill !== 'none';
 }
-
+// 检查是否具有填充
 function styleHasFill(style: PathStyleProps) {
     const fill = style.fill;
     return fill != null && fill !== 'none';
 }
+// 填充路径
 function doFillPath(ctx: CanvasRenderingContext2D, style: PathStyleProps) {
     if (style.fillOpacity != null && style.fillOpacity !== 1) {
         const originalGlobalAlpha = ctx.globalAlpha;
@@ -50,6 +52,7 @@ function doFillPath(ctx: CanvasRenderingContext2D, style: PathStyleProps) {
     }
 }
 
+// 描边路径
 function doStrokePath(ctx: CanvasRenderingContext2D, style: PathStyleProps) {
     if (style.strokeOpacity != null && style.strokeOpacity !== 1) {
         const originalGlobalAlpha = ctx.globalAlpha;
@@ -63,6 +66,7 @@ function doStrokePath(ctx: CanvasRenderingContext2D, style: PathStyleProps) {
     }
 }
 
+// 创建画布模式
 export function createCanvasPattern(
     this: void,
     ctx: CanvasRenderingContext2D,
@@ -87,7 +91,7 @@ export function createCanvasPattern(
     }
 }
 
-// Draw Path Elements
+    // 绘制路径元素
 function brushPath(ctx: CanvasRenderingContext2D, el: Path, style: PathStyleProps, inBatch: boolean) {
     let hasStroke = styleHasStroke(style);
     let hasFill = styleHasFill(style);
@@ -249,7 +253,7 @@ function brushPath(ctx: CanvasRenderingContext2D, el: Path, style: PathStyleProp
     }
 }
 
-// Draw Image Elements
+// 绘制图像元素
 function brushImage(ctx: CanvasRenderingContext2D, el: ZRImage, style: ImageStyleProps) {
     const image = el.__image = createOrUpdateImage(
         style.image,
@@ -304,7 +308,7 @@ function brushImage(ctx: CanvasRenderingContext2D, el: ZRImage, style: ImageStyl
     }
 }
 
-// Draw Text Elements
+// 绘制文本元素
 function brushText(ctx: CanvasRenderingContext2D, el: TSpan, style: TSpanStyleProps) {
 
     let text = style.text;
@@ -362,6 +366,7 @@ type AllStyleOption = PathStyleProps | TSpanStyleProps | ImageStyleProps;
 // type StrokePropNames = typeof STROKE_PROPS[number][0];
 // type DrawPropNames = typeof DRAW_PROPS[number][0];
 
+// 绑定通用属性
 function bindCommonProps(
     ctx: CanvasRenderingContext2D,
     style: AllStyleOption,
@@ -415,6 +420,7 @@ function bindCommonProps(
     return styleChanged;
 }
 
+// 绑定路径和文本的通用样式
 function bindPathAndTextCommonStyle(
     ctx: CanvasRenderingContext2D,
     el: TSpan | Path,
@@ -485,6 +491,7 @@ function bindPathAndTextCommonStyle(
     return styleChanged;
 }
 
+// 绑定图像样式
 function bindImageStyle(
     ctx: CanvasRenderingContext2D,
     el: ZRImage,
@@ -502,6 +509,7 @@ function bindImageStyle(
     );
 }
 
+// 设置上下文变换
 function setContextTransform(ctx: CanvasRenderingContext2D, el: Displayable) {
     const m = el.transform;
     const dpr = (ctx as ZRCanvasRenderingContext).dpr || 1;
@@ -513,6 +521,7 @@ function setContextTransform(ctx: CanvasRenderingContext2D, el: Displayable) {
     }
 }
 
+// 更新剪辑状态
 function updateClipStatus(clipPaths: Path[], ctx: CanvasRenderingContext2D, scope: BrushScope) {
     let allClipped = false;
     for (let i = 0; i < clipPaths.length; i++) {
@@ -528,6 +537,7 @@ function updateClipStatus(clipPaths: Path[], ctx: CanvasRenderingContext2D, scop
     scope.allClipped = allClipped;
 }
 
+// 检查变换是否改变
 function isTransformChanged(m0: MatrixArray, m1: MatrixArray): boolean {
     if (m0 && m1) {
         return m0[0] !== m1[0]
@@ -568,7 +578,7 @@ export type BrushScope = {
     lastDrawType?: number
 }
 
-// If path can be batched
+// 检查路径是否可以批处理
 function canPathBatch(style: PathStyleProps) {
 
     const hasFill = styleHasFill(style);
@@ -590,6 +600,7 @@ function canPathBatch(style: PathStyleProps) {
     );
 }
 
+// 刷新路径绘制
 function flushPathDrawn(ctx: CanvasRenderingContext2D, scope: BrushScope) {
     // Force flush all after drawn last element
     scope.batchFill && ctx.fill();
@@ -597,16 +608,16 @@ function flushPathDrawn(ctx: CanvasRenderingContext2D, scope: BrushScope) {
     scope.batchFill = '';
     scope.batchStroke = '';
 }
-
+// 获取样式
 function getStyle(el: Displayable, inHover?: boolean) {
     return inHover ? (el.__hoverStyle || el.style) : el.style;
 }
-
+// 绘制单个元素
 export function brushSingle(ctx: CanvasRenderingContext2D, el: Displayable) {
     brush(ctx, el, { inHover: false, viewWidth: 0, viewHeight: 0 }, true);
 }
 
-// Brush different type of elements.
+// 绘制不同类型的元素
 export function brush(
     ctx: CanvasRenderingContext2D,
     el: Displayable,
@@ -769,6 +780,7 @@ export function brush(
     el.__isRendered = true;
 }
 
+// 绘制增量元素
 function brushIncremental(
     ctx: CanvasRenderingContext2D,
     el: IncrementalDisplayable,

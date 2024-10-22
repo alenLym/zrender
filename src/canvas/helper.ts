@@ -3,12 +3,12 @@ import { RadialGradientObject } from '../graphic/RadialGradient';
 import { GradientObject } from '../graphic/Gradient';
 import { RectLike } from '../core/BoundingRect';
 import Path from '../graphic/Path';
-
+// 检查是否为安全数字
 function isSafeNum(num: number) {
     // NaN、Infinity、undefined、'xx'
     return isFinite(num);
 }
-
+// 创建线性渐变
 export function createLinearGradient(
     this: void,
     ctx: CanvasRenderingContext2D,
@@ -37,7 +37,7 @@ export function createLinearGradient(
 
     return canvasGradient;
 }
-
+// 创建径向渐变
 export function createRadialGradient(
     this: void,
     ctx: CanvasRenderingContext2D,
@@ -66,7 +66,7 @@ export function createRadialGradient(
 
     return canvasGradient;
 }
-
+// 获取画布渐变
 export function getCanvasGradient(this: void, ctx: CanvasRenderingContext2D, obj: GradientObject, rect: RectLike) {
     // TODO Cache?
     const canvasGradient = obj.type === 'radial'
@@ -81,7 +81,7 @@ export function getCanvasGradient(this: void, ctx: CanvasRenderingContext2D, obj
     }
     return canvasGradient;
 }
-
+// 检查剪辑路径是否改变
 export function isClipPathChanged(clipPaths: Path[], prevClipPaths: Path[]): boolean {
     // displayable.__clipPaths can only be `null`/`undefined` or an non-empty array.
     if (clipPaths === prevClipPaths || (!clipPaths && !prevClipPaths)) {
@@ -97,10 +97,11 @@ export function isClipPathChanged(clipPaths: Path[], prevClipPaths: Path[]): boo
     }
     return false;
 }
-
+// 解析10进制
 function parseInt10(val: string) {
     return parseInt(val, 10);
 }
+// 获取大小
 export function getSize(
     root: HTMLElement,
     whIdx: number,

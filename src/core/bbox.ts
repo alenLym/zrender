@@ -42,6 +42,7 @@ export function fromPoints(points: ArrayLike<number>[], min: vec2.VectorArray, m
     max[1] = bottom;
 }
 
+// 从线段中计算出最小包围盒，写入`min`和`max`中
 export function fromLine(
     x0: number, y0: number, x1: number, y1: number,
     min: vec2.VectorArray, max: vec2.VectorArray
